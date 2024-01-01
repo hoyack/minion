@@ -11,6 +11,7 @@ create <username> <password>
 conda create -n <env-name>
 conda activate <env-name>
 pip install -r requirements.txt
+export PYTHONIOENCODING=utf-8
 python webserver.py
 
 Ignite:
