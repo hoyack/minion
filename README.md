@@ -32,8 +32,8 @@ myworld Server 3.0.0
 ----------------------------------
 ```
 If the 'webclient-websocket' is running on a port other than `4002` take note as you will need this later.
-https://localhost:4005\
-`telnet localhost 4000`
+`https://localhost:4005`\
+`telnet localhost 4000`\
 Make User account for this Bot User on Evennia.\
 `create <username> <password>`
 
