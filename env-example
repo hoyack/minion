@@ -1,0 +1,5 @@
+OPENAPI_ENDPOINT=http://localhost:5000
+EVENNIA_WEBSOCKET=ws://localhost:4002
+WEBSERVER_PORT=5500
+username=minion
+password=secretPassword

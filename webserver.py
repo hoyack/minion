@@ -7,6 +7,8 @@ import os
 from dotenv import load_dotenv
 from worldparser import handle_message
 
+load_dotenv()  # Load environment variables from .env file
+
 app = Flask(__name__)
 
 ws_queue = asyncio.Queue()
@@ -27,8 +29,7 @@ def send_message():
     return jsonify({"status": "message sent"})
 
 async def websocket_client():
-    load_dotenv()
-    uri = "ws://localhost:4002"
+    uri = os.getenv('EVENNIA_WEBSOCKET', 'ws://localhost:4002')  # Default value if not set in .env
     username = os.getenv("username")
     password = os.getenv("password")
 
@@ -51,7 +52,8 @@ async def websocket_client():
         relay_task.cancel()
 
 def run_flask_app():
-    app.run(port=5500, use_reloader=False)
+    port = int(os.getenv('WEBSERVER_PORT', 5500))  # Default value if not set in .env
+    app.run(port=port, use_reloader=False)
 
 def run_websocket_client():
     ws_loop.run_until_complete(websocket_client())

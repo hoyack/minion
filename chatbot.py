@@ -1,13 +1,17 @@
 # chatbot.py
+# export PYTHONIOENCODING=utf-8
 import requests
 import json
 import os
 from datetime import datetime
 from sseclient import SSEClient
+from dotenv import load_dotenv
 
 class ChatSession:
     def __init__(self, history_file=None):
-        self.url = "http://192.168.0.113:5000/v1/chat/completions"
+        load_dotenv()  # Load environment variables from .env file
+        base_url = os.getenv('OPENAPI_ENDPOINT', 'http://localhost:5000')
+        self.url = f"{base_url}/v1/chat/completions"
         self.headers = {"Content-Type": "application/json"}
         self.history_file = history_file
         self.history = self.load_history()
@@ -47,3 +51,8 @@ class ChatSession:
 
         self.history.append({"role": "assistant", "content": assistant_message})
         return assistant_message
+
+# Example usage
+# chat_session = ChatSession(history_file="your_history_file.json")
+# response = chat_session.get_response("Hello, how are you?")
+# print(response)
