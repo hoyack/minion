@@ -62,7 +62,7 @@ For how to install Text-UI with OpenAI API on a Raspberry Pi use this guide:\
 
 # Install Minion
 ```
-`git clone https://github.com/hoyack/minion.git`
+git clone https://github.com/hoyack/minion.git
 conda create -n minion python=3.11
 conda activate minion
 cd minion
@@ -105,8 +105,9 @@ Received: ["text", ["<br>You become <span class=\"color-014\">minion</span>.<br>
 Received: ["text", ["<span class=\"color-014\">Limbo</span><br>Welcome to your new <span class=\"color-015\">Evennia</span>-based game! Visit <a href=\"https://www.evennia.com\" target=\"_blank\">https://www.evennia.com</a> if you need<br>help, want to contribute, report issues or just join the community.<br><br>As a privileged user, write <span class=\"color-015\">batchcommand tutorial_world.build</span> to build<br>tutorial content. Once built, try <span class=\"color-015\">intro</span> for starting help and <span class=\"color-015\">tutorial</span> to<br>play the demo game.<br><br><span class=\"color-015\">Characters:</span> observer"], {"type": "look"}]
 ```
 # Ignite:
-`curl -X POST http://localhost:5500/send_message -H "Content-Type: application/json" -d "{\"message\":\"say hello world\"}"`
-
+```
+curl -X POST http://localhost:5500/send_message -H "Content-Type: application/json" -d "{\"message\":\"say hello world\"}"
+```
 # Usage
 Send a `say` command in Evennia\
 This can be done manually or by making an API call.\
