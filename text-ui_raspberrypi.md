@@ -1,6 +1,6 @@
 # Oobooga Text-UI Raspberry Pi Installation 
+Tested on 8GB Pi 4 with 64-bit Ubuntu 23.10, 22.04, 20.04
 ```
-Tested on 64-bit Ubuntu 23.10, 22.04, 20.04\
 wget https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-aarch64.sh
 bash Miniforge3-$(uname)-$(uname -m).sh
 conda create -n textgen python=3.11
@@ -21,7 +21,7 @@ Example Model:
 Stop server (CTRL+C) before setting up service.
 
 # Set up service (optional)
-`sudo nano /etc/systemd/system/textgenservice.service`\
+`sudo nano /etc/systemd/system/textgenservice.service`
 ```
 [Unit]
 Description=oobooga

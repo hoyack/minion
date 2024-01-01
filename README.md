@@ -2,7 +2,7 @@
 OpenAI Evennia Chatter Bot
 
 # Install Evennia
-Only one Evennia instance is required for all bots.\
+Only one Evennia instance is required for all bots.
 ```
 git clone https://github.com/evennia/evennia.git
 cd evennia
@@ -12,7 +12,7 @@ cd myworld
 evennia migrate
 evennia start
 ```
-`evennia start / stop / reload / info / status / -l`
+`evennia start / stop / reload / info / status / -l`\
 `evennia info` should list the WebSocket running on `4002`:
 ```
 ---------------------- Evennia ---
@@ -32,16 +32,16 @@ myworld Server 3.0.0
 ----------------------------------
 ```
 If the 'webclient-websocket' is running on a port other than `4002` take note as you will need this later.
-https://localhost:4005
+https://localhost:4005\
 `telnet localhost 4000`
 Make User account for this Bot User on Evennia.\
 `create <username> <password>`
 
 # Install OpenAI API
-`https://github.com/oobabooga/text-generation-webui`
-Download a model to the `/models` directory:
-`wget https://huggingface.co/TheBloke/Llama-2-7B-Chat-GGUF/resolve/main/llama-2-7b-chat.Q4_K_M.gguf`
-start OpenAI API: `server.py --list --api --model modelname.gguf`
+`https://github.com/oobabooga/text-generation-webui`\
+Download a model to the `/models` directory:\
+`wget https://huggingface.co/TheBloke/Llama-2-7B-Chat-GGUF/resolve/main/llama-2-7b-chat.Q4_K_M.gguf`\
+start OpenAI API: `server.py --list --api --model modelname.gguf`\
 Test Open API:
 ```
 curl -X POST http://localhost:5000/v1/chat/completions \
@@ -73,7 +73,7 @@ Configure `.env`:
 cp env-example .env
 nano .env
 ```
-Modify ENV file accord to your requirements:\
+Modify ENV file accord to your requirements:
 
 ```
 OPENAPI_ENDPOINT=http://localhost:5000
@@ -86,7 +86,7 @@ Configure the preferred webserver port. This runs a local FLASK server with an A
 Configure the `OPENAPI_ENDPOINT` to match the server and port of your Text-UI installation.\
 Configure the `EVENNIA_WEBSOCKET` to match the server and port of your Evennia world.\
 Set up username and password used for Evennia Bot User.\
-\
+
 # Start Server
 ```
 export PYTHONIOENCODING=utf-8
