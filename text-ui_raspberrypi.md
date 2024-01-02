@@ -59,3 +59,35 @@ curl -X POST http://localhost:5000/v1/chat/completions \
           "instruction_template": "Alpaca"
         }'
 ```
+#advanced mounting
+`sudo blkid`\
+----| /dev/nvme1n1p1: UUID="2a5ffb6d-dca0-4485-aabe-efac685a4a51" BLOCK_SIZE="4096" TYPE="ext4" PARTUUID="d6e0e41a-b50c-46aa-91a9-121954ffcc95"\
+`sudo nano /etc/fstab`
+```
+UUID=2a5ffb6d-dca0-4485-aabe-efac685a4a51  /media/ubuntu/2a5ffb6d-dca0-4485-aabe-efac685a4a51  ext4  defaults  0  0
+```
+save\
+`sudo mkdir -p /media/ubuntu/2a5ffb6d-dca0-4485-aabe-efac685a4a51`\
+`sudo mount -a`\
+
+`which conda`\
+----| /home/ubuntu/anaconda3/bin/conda\
+`conda env list`\
+----| textgen                  /home/ubuntu/anaconda3/envs/textgen\
+`sudo nano /etc/systemd/system/textgenservice.service`
+```
+[Unit]
+Description=oobabooga
+After=network.target
+RequiresMountsFor=/media/ubuntu/2a5ffb6d-dca0-4485-aabe-efac685a4a51
+
+[Service]
+Type=simple
+User=hoyack
+ExecStart=/bin/bash -c 'cd /media/ubuntu/2a5ffb6d-dca0-4485-aabe-efac685a4a51/ai/text-generation-webui && /home/ubuntu/anaconda3/envs/textgen/bin/python /media/ubuntu/2a5ffb6d-dca0-4485-aabe-efac685a4a51/ai/text-generation-webui/server.py --listen --api --model llama-2-13b-chat.Q5_K_M.gguf'
+Restart=on-failure
+Environment="PATH=/home/ubuntu/anaconda3/bin"
+
+[Install]
+WantedBy=multi-user.target
+```
