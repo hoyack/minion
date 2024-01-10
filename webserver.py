@@ -14,6 +14,9 @@ app = Flask(__name__)
 ws_queue = asyncio.Queue()
 ws_loop = asyncio.new_event_loop()
 
+# Global variable to store the last sent message
+last_sent_message = None
+
 async def relay_messages(websocket):
     while True:
         message = await ws_queue.get()
@@ -23,33 +26,44 @@ async def relay_messages(websocket):
 
 @app.route('/send_message', methods=['POST'])
 def send_message():
+    global last_sent_message
     message = request.json.get("message")
     formatted_message = json.dumps(["text", [message], {"cmdid": 1}])
+    last_sent_message = formatted_message  # Store the last sent message
     asyncio.run_coroutine_threadsafe(ws_queue.put(formatted_message), ws_loop)
     return jsonify({"status": "message sent"})
 
 async def websocket_client():
-    uri = os.getenv('EVENNIA_WEBSOCKET', 'ws://localhost:4002')  # Default value if not set in .env
+    global last_sent_message
+    uri = os.getenv('EVENNIA_WEBSOCKET', 'ws://localhost:4002')
     username = os.getenv("username")
     password = os.getenv("password")
 
-    async with websockets.connect(uri) as websocket:
-        print("WebSocket client connected to Evennia server.")
-        connect_command = json.dumps(["text", [f"connect {username} {password}"], {"cmdid": 0}])
-        await websocket.send(connect_command)
+    while True:  # Loop for reconnection attempts
+        try:
+            async with websockets.connect(uri) as websocket:
+                print("WebSocket client connected to Evennia server.")
+                connect_command = json.dumps(["text", [f"connect {username} {password}"], {"cmdid": 0}])
+                await websocket.send(connect_command)
 
-        relay_task = asyncio.create_task(relay_messages(websocket))
+                if last_sent_message:
+                    await websocket.send(last_sent_message)  # Resend the last message after reconnection
 
-        while True:
-            try:
-                message = await websocket.recv()
-                print(f"Received: {message}")
-                await handle_message(message)
-            except websockets.exceptions.ConnectionClosed:
-                print("WebSocket connection closed.")
-                break
+                relay_task = asyncio.create_task(relay_messages(websocket))
 
-        relay_task.cancel()
+                while True:
+                    try:
+                        message = await websocket.recv()
+                        print(f"Received: {message}")
+                        await handle_message(message)
+                    except websockets.exceptions.ConnectionClosed:
+                        print("WebSocket connection closed. Attempting to reconnect...")
+                        break  # Breaks the inner loop to reconnect
+
+                relay_task.cancel()
+        except Exception as e:
+            print(f"WebSocket connection failed: {e}")
+        await asyncio.sleep(5)  # Wait before attempting to reconnect
 
 def run_flask_app():
     port = int(os.getenv('WEBSERVER_PORT', 5500))  # Default value if not set in .env

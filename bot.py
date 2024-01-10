@@ -10,6 +10,7 @@ load_dotenv()
 def send_message_and_get_response(history_filename, user_message):
     # Create a chat session
     chat_session = ChatSession(history_filename)
+    chat_session.load_history()  # Load the history here
 
     # Send the message and get a response
     response = chat_session.get_response(user_message)

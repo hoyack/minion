@@ -42,6 +42,7 @@ Make User account for this Bot User on Evennia.\
 Download a model to the `/models` directory:\
 `wget https://huggingface.co/TheBloke/Llama-2-7B-Chat-GGUF/resolve/main/llama-2-7b-chat.Q4_K_M.gguf`\
 start OpenAI API: `server.py --list --api --model modelname.gguf`\
+start OpenAI API on Windows: `python server.py --listen --api --wbits 4 --groupsize 128 --cpu-memory 0 --gpu-memory 8500MiB --model_type llama --model modelname.gguf`
 Test Open API:
 ```
 curl -X POST http://localhost:5000/v1/chat/completions \
@@ -112,3 +113,6 @@ curl -X POST http://localhost:5500/send_message -H "Content-Type: application/js
 Send a `say` command in Evennia\
 This can be done manually or by making an API call.\
 All bots present will listen for any user who sends a `say` command and process it as an input through their OpenAI API, and post the response back as a `say` statement. For example if 10 users are present and they all `say Hello bot` then the bot will process each user's statement, and respond to each. If other bots are listening they will respond to the 1st bot's response. Therefore, to achieve basic "ignition" join 2 minion bots to the same Evennia chanel and post 1 `say` statement by making the ignition API call to the `send_message` endpoint such as `say hello world` and any bots listening will use that as an input and they will say an output.
+
+# Note on Windows
+If text-gen Windows is slow use this `server.py --wbits 4 --groupsize 128 --cpu-memory 0 --gpu-memory 8500MiB --model_type llama`
