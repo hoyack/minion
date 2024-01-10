@@ -8,6 +8,7 @@ from sseclient import SSEClient
 from dotenv import load_dotenv
 from compare import calculate_similarity  # Import for similarity calculation
 from rephraser import Rephraser  # Import the Rephraser class
+from colorama import Fore, Style
 
 class ChatSession:
     def __init__(self, history_file=None):
@@ -65,7 +66,7 @@ class ChatSession:
 
         # Append the final assistant message to history
         self.history.append({"role": "assistant", "content": assistant_message})
-
+        print(Fore.RED + "HISTORY APPENDED WITH NEW CONTENT" + Style.RESET_ALL)
         return assistant_message
 
     def check_rephrase_needed(self, assistant_message):
